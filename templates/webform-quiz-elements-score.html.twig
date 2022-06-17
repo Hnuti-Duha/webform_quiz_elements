@@ -1,0 +1,28 @@
+{#
+/**
+ * @file
+ * Default theme implementation of a Webform Quiz Score element.
+ *
+ * Available variables:
+ *  - quiz_total_questions_count
+ *  - quiz_correct_answers_count
+ *  - quiz_score
+ *  - quiz_is_pass
+ * @see template_preprocess_webform_quiz_elements_score()
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="webform-quiz-elements__score">
+  <h3>Quiz result</h3>
+
+  <div class="form-item">
+    <p>You scored <strong>{{quiz_correct_answers_count}} out of {{quiz_total_questions_count}}</strong></p>
+
+    {% if quiz_is_pass %}
+      <p>Contratulations! You passed the quiz.</p>
+    {% else %}
+      <p>Unfortunately you did not pass, but don't worry, you can have another go.</p>
+    {% endif %}
+  </div>
+</div>

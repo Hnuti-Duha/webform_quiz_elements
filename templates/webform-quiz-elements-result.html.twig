@@ -1,0 +1,33 @@
+{#
+/**
+ * @file
+ * Default theme implementation of a Webform Quiz result element.
+ *
+ * Available variables:
+ * - quiz_title: HTML attributes for the horizontal_rule element.
+ * - quiz_answer: HTML attributes for the horizontal_rule element.
+ * - quiz_is_correct: HTML attributes for the horizontal_rule element.
+ * - quiz_feedback: HTML attributes for the horizontal_rule element.
+ *
+ * @see template_preprocess_webform_quiz_elements_result()
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="webform-quiz-elements__result">
+  <h3>{{quiz_title}}</h3>
+  <div class="form-item">
+    <strong>Your answer:</strong> {{quiz_answer}}
+  </div>
+
+  {% if quiz_is_correct %}
+    <div class="messages messages--info form-item">
+      <p><strong>Correct.</strong> {{quiz_feedback}}</p>
+    </div>
+  {% else %}
+    <div class="messages messages--error form-item">
+      <p><strong>Incorrect.</strong> {{quiz_feedback}}</p>
+    </div>
+  {% endif %}
+  </p>
+</p>

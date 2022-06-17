@@ -1,0 +1,91 @@
+<?php
+
+/**
+ * @file
+ * Contains webform_simple_quiz.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Render\Markup;
+
+/**
+ * Implements hook_help().
+ */
+function webform_quiz_elements_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the webform_quiz module.
+    case 'help.page.webform_quiz_elements':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Build awesome quizzes using the webform module.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function webform_quiz_elements_theme() {
+  $info = [
+    'webform_quiz_elements_result' => [
+      'render element' => 'element',
+      'variables' => [
+        'quiz_title' => NULL,
+        'quiz_answer' => NULL,
+        'quiz_is_correct' => FALSE,
+        'quiz_feedback' => NULL,
+      ],
+    ],
+    'webform_quiz_elements_score' => [
+      'render element' => 'element',
+      'variables' => [
+        'quiz_total_questions_count' => NULL,
+        'quiz_correct_answers_count' => NULL,
+        'quiz_score' => NULL,
+        'quiz_is_pass' => FALSE,
+      ],
+    ],
+  ];
+
+  return $info;
+}
+
+/**
+ * Prepares variables for webform quiz result template.
+ *
+ * Default template: webform-quiz-elements-result.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: An associative array containing the properties of the element.
+ */
+function template_preprocess_webform_quiz_elements_result(array &$variables) {
+}
+
+/**
+ * Prepares variables for webform quiz score template.
+ *
+ * Default template: webform-quiz-elements-score.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - element: An associative array containing the properties of the element.
+ */
+function template_preprocess_webform_quiz_elements_score(array &$variables) {
+}
+
+/**
+ * Implements hook_token_info_alter().
+ */
+function webform_quiz_elements_token_info_alter(&$data) {
+  module_load_include('inc', 'webform_quiz_elements', 'webform_quiz_elements_.tokens');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_quiz_elements_theme_suggestions_webform_quiz_elements_score(array $variables) {
+
+}

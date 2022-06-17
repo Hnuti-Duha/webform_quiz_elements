@@ -1,0 +1,7 @@
+/drush/contrib/
+/vendor/
+/.idea/
+/.env
+.DS_Store
+node_modules/
+.vscode/
