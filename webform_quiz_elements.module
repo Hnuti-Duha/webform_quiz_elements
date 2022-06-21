@@ -7,7 +7,8 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Render\Markup;
-
+use Drupal\webform\Entity\WebformSubmission;
+use Drupal\webform_quiz_elements\Plugin\WebformQuizElementsInterface;
 /**
  * Implements hook_help().
  */
@@ -19,8 +20,6 @@ function webform_quiz_elements_help($route_name, RouteMatchInterface $route_matc
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('Build awesome quizzes using the webform module.') . '</p>';
       return $output;
-
-    default:
   }
 }
 
@@ -45,6 +44,7 @@ function webform_quiz_elements_theme() {
         'quiz_correct_answers_count' => NULL,
         'quiz_score' => NULL,
         'quiz_is_pass' => FALSE,
+        'quiz_feedback_message' => NULL,
       ],
     ],
   ];
@@ -74,6 +74,27 @@ function template_preprocess_webform_quiz_elements_result(array &$variables) {
  *   - element: An associative array containing the properties of the element.
  */
 function template_preprocess_webform_quiz_elements_score(array &$variables) {
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function webform_quiz_elements_preprocess_webform_confirmation(array &$variables) {
+  if (isset($variables['webform'])) {
+    $webform = $variables['webform'];
+    $flattened_elements = $webform->getElementsInitializedAndFlattened();
+
+    // Attach style library to preview since preview tokens is not attaching css.
+    foreach ($flattened_elements as $element_key => $element) {
+      if (in_array($element['#webform_plugin_id'], WebformQuizElementsInterface::QUIZ_RENDERED_ELEMENTS)) {
+        $variables['#attached']['library'][] = 'webform_quiz_elements/styles';
+        break;
+      }
+    }
+  }
+}
+
+function webform_quiz_elements_page_attachments(&$variables) {
 }
 
 /**

@@ -35,8 +35,6 @@ function webform_quiz_elements_token_info() {
  * Implements hook_tokens().
  */
 function webform_quiz_elements_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
-  $token_service = \Drupal::token();
-
   $replacements = [];
   if ($type === 'webform' && !empty($data['webform'])) {
     /** @var \Drupal\webform\WebformInterface $webform */

@@ -14,8 +14,8 @@ use Drupal\webform_quiz_elements\Plugin\WebformQuizElementsInterface;
  *
  * @WebformElement(
  *   id = "webform_quiz_elements_score",
- *   label = @Translation("Quiz score"),
- *   description = @Translation("Provides a container with quiz score."),
+ *   label = @Translation("Quiz total score"),
+ *   description = @Translation("Provides a container with total quiz score."),
  *   category = @Translation("Quiz elements"),
  * )
  */
@@ -29,6 +29,8 @@ class WebformQuizElementsScore extends WebformElementBase implements WebformElem
   protected function defineDefaultProperties() {
     $properties = [
       'passing_score_percentage' => 100,
+      'feedback_message_pass' => '',
+      'feedback_message_fail' => '',
       'display_on' => WebformElementDisplayOnInterface::DISPLAY_ON_VIEW,
     ] + parent::defineDefaultProperties();
     return $properties;
@@ -64,6 +66,7 @@ class WebformQuizElementsScore extends WebformElementBase implements WebformElem
       '#quiz_correct_answers_count' => $this->getWebformQuizCorrectAnswersCount(NULL, $webform_submission),
       '#quiz_score' => $this->getWebformQuizScore(NULL, $webform_submission),
       '#quiz_is_pass' => $this->getWebformQuizPass(NULL, $webform_submission),
+      '#quiz_feedback_message' => 'Contratulations!',
     ];
   }
 
@@ -81,6 +84,7 @@ class WebformQuizElementsScore extends WebformElementBase implements WebformElem
       '#quiz_correct_answers_count' => $this->getWebformQuizCorrectAnswersCount(NULL, $webform_submission),
       '#quiz_score' => $this->getWebformQuizScore(NULL, $webform_submission),
       '#quiz_is_pass' => $this->getWebformQuizPass(NULL, $webform_submission),
+      '#quiz_feedback_message' => 'Contratulations!',
     ];
 
     return $element;
@@ -134,6 +138,7 @@ class WebformQuizElementsScore extends WebformElementBase implements WebformElem
       '#title' => $this->t('Quiz score settings'),
       '#destination' => $this->t('Properties'),
     ];
+
     $form['quiz_score']['passing_score_percentage'] = [
       '#type' => 'number',
       '#min' => 1,
@@ -141,6 +146,21 @@ class WebformQuizElementsScore extends WebformElementBase implements WebformElem
       '#title' => $this->t('Passing score percentage'),
       '#required' => TRUE,
     ];
+
+    $form['quiz_score']['feedback_message_pass'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Success message'),
+      '#help' => $this->t('This message will be displayed in quiz score container in case user has passed the quiz.'),
+      '#required' => TRUE,
+    ];
+
+    $form['quiz_score']['feedback_message_fail'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Failed message'),
+      '#help' => $this->t('This message will be displayed in quiz score container in case user has failed the quiz.'),
+      '#required' => TRUE,
+    ];
+
     $form['quiz_score']['display_on'] = [
       '#type' => 'select',
       '#title' => $this->t('Display on'),

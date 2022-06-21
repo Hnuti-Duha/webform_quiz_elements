@@ -20,8 +20,14 @@ class WebformQuizElementScore extends RenderElement {
       '#quiz_correct_answers_count' => '',
       '#quiz_score' => '',
       '#quiz_is_pass' => FALSE,
+      '#quiz_feedback_message' => '',
       '#theme' => 'webform_quiz_elements_score',
       '#attributes' => [],
+      '#attached' => [
+        'library' => [
+          'webform_quiz_elements/styles',
+        ],
+      ],
     ];
   }
 

@@ -14,20 +14,20 @@
  * @ingroup themeable
  */
 #}
-<div class="webform-quiz-elements__result">
-  <h3>{{quiz_title}}</h3>
-  <div class="form-item">
-    <strong>Your answer:</strong> {{quiz_answer}}
-  </div>
 
-  {% if quiz_is_correct %}
-    <div class="messages messages--info form-item">
-      <p><strong>Correct.</strong> {{quiz_feedback}}</p>
-    </div>
-  {% else %}
-    <div class="messages messages--error form-item">
-      <p><strong>Incorrect.</strong> {{quiz_feedback}}</p>
-    </div>
-  {% endif %}
-  </p>
+<div class="webform-quiz-elements__result">
+  <h4>{{quiz_title}}</h4>
+  <div class="form-item">
+    <ul class="webform-quiz-element-result-list">
+      <li class="messages messages--neutral">It has 2 or more toasters available for $1</li>
+      <li class="messages messages--neutral">It has enough toasters in stock to meet expected demand until lunchtime on the first day of the sale</li>
+      <li class="messages messages--{{ quiz_is_correct ? 'status' : 'error' }}">
+        {{ quiz_answer }}
+        <p>{{ quiz_feedback }}</p>
+      </li>
+      <li class="messages messages--neutral">It has a reasonable quantity of the toasters available for sale for the full duration of the sale</li>
+
+    </ul>
+  </div>
 </p>
+

@@ -22,6 +22,11 @@ class WebformQuizElementResult extends RenderElement {
       '#quiz_feedback' => '',
       '#theme' => 'webform_quiz_elements_result',
       '#attributes' => [],
+      '#attached' => [
+        'library' => [
+          'webform_quiz_elements/styles',
+        ],
+      ],
     ];
   }
 

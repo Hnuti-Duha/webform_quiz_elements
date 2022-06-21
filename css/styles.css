@@ -1,0 +1,13 @@
+.webform-quiz-element-result-list {
+  list-style: none;
+}
+
+.webform-quiz-element-result-list .messages + .messages {
+  margin-top: .5rem;
+}
+
+.webform-quiz-element-result-list .messages--neutral {
+  border-color: #eee #eee #eee transparent;
+  box-shadow: -8px 0 0 #eee;
+}
+

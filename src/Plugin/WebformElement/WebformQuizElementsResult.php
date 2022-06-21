@@ -14,8 +14,8 @@ use Drupal\webform_quiz_elements\Plugin\WebformQuizElementsInterface;
  *
  * @WebformElement(
  *   id = "webform_quiz_elements_result",
- *   label = @Translation("Quiz element result"),
- *   description = @Translation("Provides a container with quiz element result."),
+ *   label = @Translation("Result (per quiz element)"),
+ *   description = @Translation("Provides a container with a result of a quiz element, eg your answer is correct/incorrect and feedback."),
  *   category = @Translation("Quiz elements"),
  * )
  */
@@ -29,7 +29,7 @@ class WebformQuizElementsResult extends WebformElementBase implements WebformEle
   protected function defineDefaultProperties() {
     $properties = [
       'source' => '',
-      'display_on' => WebformElementDisplayOnInterface::DISPLAY_ON_BOTH,
+      'display_on' => WebformElementDisplayOnInterface::DISPLAY_ON_VIEW,
     ] + parent::defineDefaultProperties();
     return $properties;
   }
@@ -146,6 +146,7 @@ class WebformQuizElementsResult extends WebformElementBase implements WebformEle
       '#title' => $this->t('Show results for'),
       '#destination' => $this->t('Please note, the source and destination element must be the same element types.'),
     ];
+
     $form['quiz_result']['source'] = [
       '#type' => 'select',
       '#title' => $this->t('Quiz element'),
@@ -153,6 +154,11 @@ class WebformQuizElementsResult extends WebformElementBase implements WebformEle
       '#required' => TRUE,
     ];
 
+    $form['quiz_result']['display_on'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display on'),
+      '#options' => $this->getDisplayOnOptions(),
+    ];
     return $form;
   }
 

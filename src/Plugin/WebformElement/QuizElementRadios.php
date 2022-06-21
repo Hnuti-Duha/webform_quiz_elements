@@ -12,7 +12,7 @@ use Drupal\webform\WebformSubmissionInterface;
  * @WebformElement(
  *   id = "quiz_element_radios",
  *   api = "https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Render!Element!Radios.php/class/Radios",
- *   label = @Translation("Radios (quiz)"),
+ *   label = @Translation("Radios (quiz element)"),
  *   description = @Translation("Provides a form element for a set of radio buttons with a correct answer and feedback."),
  *   category = @Translation("Quiz elements"),
  * )

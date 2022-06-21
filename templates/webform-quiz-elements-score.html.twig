@@ -8,6 +8,7 @@
  *  - quiz_correct_answers_count
  *  - quiz_score
  *  - quiz_is_pass
+ *  - quiz_feedback_message
  * @see template_preprocess_webform_quiz_elements_score()
  *
  * @ingroup themeable
@@ -17,12 +18,7 @@
   <h3>Quiz result</h3>
 
   <div class="form-item">
-    <p>You scored <strong>{{quiz_correct_answers_count}} out of {{quiz_total_questions_count}}</strong></p>
-
-    {% if quiz_is_pass %}
-      <p>Contratulations! You passed the quiz.</p>
-    {% else %}
-      <p>Unfortunately you did not pass, but don't worry, you can have another go.</p>
-    {% endif %}
+    <p>You have answered<strong>{{quiz_correct_answers_count}} out of {{quiz_total_questions_count}}</strong> correctly.</p>
+    <p>{{quiz_feedback_message}}</p>
   </div>
 </div>

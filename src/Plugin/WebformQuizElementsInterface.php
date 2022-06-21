@@ -8,12 +8,22 @@ namespace Drupal\webform_quiz_elements\Plugin;
 interface WebformQuizElementsInterface {
 
   /**
-   * Includes a list of all quiz elements.
+   * Includes a list of quiz (questions) elements.
    *
    * @var array
    */
   const QUIZ_ELEMENTS = [
     'quiz_element_radios',
+  ];
+
+  /**
+   * Includes a list of quiz rendered elements (results, score).
+   *
+   * @var array
+   */
+  const QUIZ_RENDERED_ELEMENTS = [
+      'webform_quiz_elements_score',
+      'webform_quiz_elements_result',
   ];
 
 }
