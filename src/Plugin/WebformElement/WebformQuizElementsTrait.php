@@ -12,7 +12,7 @@ use Drupal\webform_quiz_elements\Plugin\WebformQuizElementsInterface;
 trait WebformQuizElementsTrait {
 
   /**
-   * Desc.
+   * Returns count of quiz elements.
    */
   private function getWebformQuizElementsCount(FormStateInterface $form_state = NULL, WebformSubmissionInterface $webform_submission = NULL) {
     $options = $this->getWebformQuizElementsAsOptions($form_state, $webform_submission);
@@ -21,19 +21,11 @@ trait WebformQuizElementsTrait {
   }
 
   /**
-   * Desc.
+   * Returns quiz elements as options.
    */
   private function getWebformQuizElementsAsOptions(FormStateInterface $form_state = NULL, WebformSubmissionInterface $webform_submission = NULL) {
-    $webform = NULL;
-
-    if (isset($form_state)) {
-      /** @var \Drupal\webform\WebformInterface $webform */
-      $webform = $form_state->getFormObject()->getWebform();
-    }
-    elseif (isset($webform_submission)) {
-      $webform = $webform_submission->getWebform();
-    }
-    else {
+    $webform = $this->getWebformObject($form_state, $webform_submission);
+    if (!isset($webform)) {
       return [];
     }
 
@@ -51,17 +43,32 @@ trait WebformQuizElementsTrait {
   }
 
   /**
-   * Desc.
+   * Returns count of correctly answered questions.
    */
   private function getWebformQuizCorrectAnswersCount(FormStateInterface $form_state = NULL, WebformSubmissionInterface $webform_submission = NULL) {
-    $options = $this->getWebformQuizElementsAsOptions($form_state, $webform_submission);
-    $elements = array_merge(...array_values($options));
-    return count($elements) - 1;
-    // @todo iterate all questions and answers to count correct answers.
+    $webform = $this->getWebformObject($form_state, $webform_submission);
+    if (!isset($webform)) {
+      return [];
+    }
+
+    $flattened_elements = $webform->getElementsInitializedFlattenedAndHasValue();
+    $count = 0;
+    foreach ($flattened_elements as $element_key => $element) {
+      $element_plugin = $this->elementManager->getElementInstance($element);
+      if (in_array($element_plugin->getPluginId(), WebformQuizElementsInterface::QUIZ_ELEMENTS)) {
+        $answer = $webform_submission->getElementData($element_key);
+        if (isset($answer)
+          && array_key_exists('#quiz__options', $element)
+          && $element['#quiz__options'][$answer]['is_correct']) {
+          $count++;
+        }
+      }
+    }
+    return $count;
   }
 
   /**
-   * Desc.
+   * Returns total quiz score in percentage.
    */
   private function getWebformQuizScore(FormStateInterface $form_state = NULL, WebformSubmissionInterface $webform_submission = NULL) {
     $total = $this->getWebformQuizElementsCount($form_state, $webform_submission);
@@ -71,14 +78,65 @@ trait WebformQuizElementsTrait {
   }
 
   /**
-   * Desc.
+   * Returns quiz webform title.
    */
-  private function getWebformQuizPass(FormStateInterface $form_state = NULL, WebformSubmissionInterface $webform_submission = NULL) {
-    $score = $this->getWebformQuizScore($form_state, $webform_submission);
-    // @todo get passing score from score element.
-    $passing_score = 88;
+  private function getWebformQuizTitle(FormStateInterface $form_state = NULL, WebformSubmissionInterface $webform_submission = NULL) {
+    /** @var \Drupal\webform\WebformInterface $webform */
+    $webform = $this->getWebformObject($form_state, $webform_submission);
+    if (!isset($webform)) {
+      return '';
+    }
+    return $webform->get('title');
+  }
 
-    return $score >= $passing_score;
+  /**
+   * Returns quiz element options with feedback.
+   */
+  private function getQuizOptionsWithFeedback($quiz_element, $answer_data) {
+    $quiz_options = [];
+
+    if (!(isset($quiz_options)) || !isset($answer_data)) {
+      return [];
+    }
+
+    foreach ($quiz_element['#options'] as $key => $option) {
+      $feedback = (array_key_exists('#quiz__options', $quiz_element)
+        && isset($quiz_element['#quiz__options']))
+        ? $quiz_element['#quiz__options'][$key] : NULL;
+      $quiz_options[] = [
+        'key' => $key,
+        'option' => $option,
+        'is_selected' => ($key == $answer_data),
+        'is_correct' => ($key == $answer_data
+          && isset($feedback) && array_key_exists('is_correct', $feedback)
+          && $feedback['is_correct']),
+        'feedback' => (isset($feedback)
+          && array_key_exists('feedback', $feedback)
+          ? $feedback['feedback'] : ''),
+      ];
+    }
+
+    return $quiz_options;
+  }
+
+  /**
+   * Returns webform object.
+   */
+  private function getWebformObject($form_state, $webform_submission) {
+    $webform = $this->getWebform();
+    if (isset($webform)) {
+      return $webform;
+    }
+    elseif (isset($form_state)) {
+      /** @var \Drupal\webform\WebformInterface $webform */
+      return $form_state->getFormObject()->getWebform();
+    }
+    elseif (isset($webform_submission)) {
+      return $webform_submission->getWebform();
+    }
+    else {
+      return NULL;
+    }
   }
 
 }

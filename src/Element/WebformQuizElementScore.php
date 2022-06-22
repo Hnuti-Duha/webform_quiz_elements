@@ -16,6 +16,7 @@ class WebformQuizElementScore extends RenderElement {
    */
   public function getInfo() {
     return [
+      '#quiz_title' => '',
       '#quiz_total_questions_count' => '',
       '#quiz_correct_answers_count' => '',
       '#quiz_score' => '',

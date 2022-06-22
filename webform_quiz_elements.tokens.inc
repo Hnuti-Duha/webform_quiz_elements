@@ -27,7 +27,6 @@ function webform_quiz_elements_token_info() {
   ];
 
   $tokens['webform'] = $quiz;
-
   return ['types' => [], 'tokens' => $tokens];
 }
 

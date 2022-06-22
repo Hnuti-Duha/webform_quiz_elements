@@ -61,13 +61,7 @@ class WebformQuizElementsScore extends WebformElementBase implements WebformElem
       $element['#access'] = FALSE;
     }
 
-    $element = $element + [
-      '#quiz_total_questions_count' => $this->getWebformQuizElementsCount(NULL, $webform_submission),
-      '#quiz_correct_answers_count' => $this->getWebformQuizCorrectAnswersCount(NULL, $webform_submission),
-      '#quiz_score' => $this->getWebformQuizScore(NULL, $webform_submission),
-      '#quiz_is_pass' => $this->getWebformQuizPass(NULL, $webform_submission),
-      '#quiz_feedback_message' => 'Contratulations!',
-    ];
+    $element += $this->getElementVariables($element, $webform_submission);
   }
 
   /**
@@ -79,15 +73,7 @@ class WebformQuizElementsScore extends WebformElementBase implements WebformElem
       return [];
     }
 
-    $element = $element + [
-      '#quiz_total_questions_count' => $this->getWebformQuizElementsCount(NULL, $webform_submission),
-      '#quiz_correct_answers_count' => $this->getWebformQuizCorrectAnswersCount(NULL, $webform_submission),
-      '#quiz_score' => $this->getWebformQuizScore(NULL, $webform_submission),
-      '#quiz_is_pass' => $this->getWebformQuizPass(NULL, $webform_submission),
-      '#quiz_feedback_message' => 'Contratulations!',
-    ];
-
-    return $element;
+    return $element + $this->getElementVariables($element, $webform_submission);
   }
 
   /**
@@ -99,16 +85,19 @@ class WebformQuizElementsScore extends WebformElementBase implements WebformElem
       return [];
     }
 
+    $quiz_title = $this->getWebformQuizTitle(NULL, $webform_submission);
     $question_count = $this->getWebformQuizElementsCount(NULL, $webform_submission);
     $correct_answers = $this->getWebformQuizCorrectAnswersCount(NULL, $webform_submission);
-    $is_pass = $this->getWebformQuizPass(NULL, $webform_submission);
-    $text = "You scored $correct_answers out of $question_count. ";
-    if ($is_pass) {
-      $text .= "Congratulations, you have passed the quiz.";
-    }
-    else {
-      $text .= "Unfortunately, you have not passed the quiz.";
-    }
+    $is_pass = $this->getWebformQuizPass(NULL, $webform_submission, $element) ? 'PASSED' : 'FAILED';
+    $feedback = $this->getWebformQuizFeedback(NULL, $webform_submission);
+
+    $text = $this->t('Quiz result: @is_pass. You have answered @correct_answers out of @question_count correctly for @quiz_title. @feedback.', [
+      '@quiz_title' => $quiz_title,
+      '@correct_answers' => $correct_answers,
+      '@question_count' => $question_count,
+      '@is_pass' => $is_pass,
+      '@feedback' => $feedback,
+    ]);
 
     return ['#plain_text' => $text];
   }
@@ -168,6 +157,26 @@ class WebformQuizElementsScore extends WebformElementBase implements WebformElem
     ];
 
     return $form;
+  }
+
+  /**
+   * Get element variables for rendering.
+   */
+  private function getElementVariables($element, $webform_submission) {
+    $score = $this->getWebformQuizScore(NULL, $webform_submission);
+    $is_pass = $score >= (array_key_exists('#passing_score_percentage', $element)
+      ? $element["#passing_score_percentage"] : 100);
+    $message = $is_pass ? $element["#feedback_message_pass"] : $element["#feedback_message_fail"];
+
+    return [
+      '#quiz_title' => $this->getWebformQuizTitle(NULL, $webform_submission),
+      '#quiz_total_questions_count' => $this->getWebformQuizElementsCount(NULL, $webform_submission),
+      '#quiz_correct_answers_count' => $this->getWebformQuizCorrectAnswersCount(NULL, $webform_submission),
+      '#quiz_score' => $score,
+      '#quiz_is_pass' => $is_pass,
+      '#quiz_feedback_message' => $message,
+
+    ];
   }
 
 }

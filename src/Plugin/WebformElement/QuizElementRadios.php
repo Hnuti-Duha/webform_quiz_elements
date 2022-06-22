@@ -74,22 +74,6 @@ class QuizElementRadios extends Radios {
     return [];
   }
 
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setDefaultValue(array &$element) {
-    // Unset empty string as default option to prevent '' === '0' issue.
-    // @see \Drupal\Core\Render\Element\Radio::preRenderRadio
-    if (
-      isset($element['#default_value'])
-      && $element['#default_value'] === ''
-      && !isset($element['#options'][$element['#default_value']])
-    ) {
-      unset($element['#default_value']);
-    }
-  }
-
   /**
    * {@inheritdoc}
    */
@@ -114,22 +98,6 @@ class QuizElementRadios extends Radios {
     ];
 
     return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
-    parent::validateConfigurationForm($form, $form_state);
-
-    // Make sure no blank options get submitted. If they are, just remove them.
-    // $values = $form_state->getValues();
-    // foreach ($values['options'] as $key => $value) {
-    //   if (empty($value)) {
-    //     unset($values['options'][$value]);
-    //   }
-    // }
-    // $form_state->setValues($values);
   }
 
 }

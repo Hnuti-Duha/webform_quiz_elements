@@ -17,9 +17,7 @@ class WebformQuizElementResult extends RenderElement {
   public function getInfo() {
     return [
       '#quiz_title' => '',
-      '#quiz_answer' => '',
-      '#quiz_is_correct' => FALSE,
-      '#quiz_feedback' => '',
+      '#quiz_options' => [],
       '#theme' => 'webform_quiz_elements_result',
       '#attributes' => [],
       '#attached' => [

@@ -5,9 +5,7 @@
  *
  * Available variables:
  * - quiz_title: HTML attributes for the horizontal_rule element.
- * - quiz_answer: HTML attributes for the horizontal_rule element.
- * - quiz_is_correct: HTML attributes for the horizontal_rule element.
- * - quiz_feedback: HTML attributes for the horizontal_rule element.
+ * - quiz_options: HTML attributes for the horizontal_rule element.
  *
  * @see template_preprocess_webform_quiz_elements_result()
  *
@@ -19,14 +17,15 @@
   <h4>{{quiz_title}}</h4>
   <div class="form-item">
     <ul class="webform-quiz-element-result-list">
-      <li class="messages messages--neutral">It has 2 or more toasters available for $1</li>
-      <li class="messages messages--neutral">It has enough toasters in stock to meet expected demand until lunchtime on the first day of the sale</li>
-      <li class="messages messages--{{ quiz_is_correct ? 'status' : 'error' }}">
-        {{ quiz_answer }}
-        <p>{{ quiz_feedback }}</p>
+    {% for quiz_option in quiz_options %}
+      <li class="messages messages--{{ quiz_option.is_selected ? (quiz_option.is_correct ? 'status' : 'error') : 'neutral' }}">
+        <strong>{{ quiz_option.option }}</strong>
+        {% if quiz_option.is_selected %}
+        <span class="sr-only">Your answer is {{ quiz_option.is_correct ? 'correct' : 'incorrect' }}</span>
+        <p class="form-item">{{ quiz_option.feedback }}</p>
+        {% endif %}
       </li>
-      <li class="messages messages--neutral">It has a reasonable quantity of the toasters available for sale for the full duration of the sale</li>
-
+      {%- endfor %}
     </ul>
   </div>
 </p>

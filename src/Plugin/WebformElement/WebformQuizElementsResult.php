@@ -60,22 +60,7 @@ class WebformQuizElementsResult extends WebformElementBase implements WebformEle
     }
 
     if (isset($element['#source'])) {
-      $source = $element['#source'];
-      $webform = $webform_submission->getWebform();
-      $data = $webform_submission->getElementData($source);
-
-      if (isset($data)) {
-        $quiz_element = $webform->getElement($source);
-        $answer = $quiz_element['#options'][$data];
-        $feedback = isset($quiz_element['#quiz__options']) ? $quiz_element['#quiz__options'][$data] : NULL;
-
-        $element = $element + [
-          '#quiz_title' => $quiz_element['#title'],
-          '#quiz_answer' => $answer,
-          '#quiz_is_correct' => isset($feedback) && isset($feedback['is_correct']) ? $feedback['is_correct'] : FALSE,
-          '#quiz_feedback' => isset($feedback) && isset($feedback['feedback']) ? $feedback['feedback'] : FALSE,
-        ];
-      }
+      $element += $this->getElementVariables($webform_submission, $element['#source']);
     }
   }
 
@@ -84,29 +69,12 @@ class WebformQuizElementsResult extends WebformElementBase implements WebformEle
    */
   public function buildHtml(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     // Hide element if it should not be displayed on 'view'.
-    if (!$this->isDisplayOn($element, WebformElementDisplayOnInterface::DISPLAY_ON_VIEW)) {
+    if (!$this->isDisplayOn($element, WebformElementDisplayOnInterface::DISPLAY_ON_VIEW)
+      || !isset($element['#source'])) {
       return [];
     }
 
-    if (isset($element['#source'])) {
-      $source = $element['#source'];
-      $webform = $webform_submission->getWebform();
-      $data = $webform_submission->getElementData($source);
-
-      if (isset($data)) {
-        $quiz_element = $webform->getElement($source);
-        $answer = $quiz_element['#options'][$data];
-        $feedback = isset($quiz_element['#quiz__options']) ? $quiz_element['#quiz__options'][$data] : NULL;
-
-        $element = $element + [
-          '#quiz_title' => $quiz_element['#title'],
-          '#quiz_answer' => $answer,
-          '#quiz_is_correct' => isset($feedback) && isset($feedback['is_correct']) ? $feedback['is_correct'] : FALSE,
-          '#quiz_feedback' => isset($feedback) && isset($feedback['feedback']) ? $feedback['feedback'] : FALSE,
-        ];
-      }
-    }
-    return $element;
+    return $element + $this->getElementVariables($webform_submission, $element['#source']);
   }
 
   /**
@@ -114,24 +82,32 @@ class WebformQuizElementsResult extends WebformElementBase implements WebformEle
    */
   public function buildText(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     // Hide element if it should not be displayed on 'view'.
-    if (!$this->isDisplayOn($element, WebformElementDisplayOnInterface::DISPLAY_ON_VIEW)) {
+    if (!$this->isDisplayOn($element, WebformElementDisplayOnInterface::DISPLAY_ON_VIEW)
+      || !isset($element['#source'])) {
       return [];
     }
 
-    return ['#plain_text' => 'buildText'];
-  }
+    $source = $element['#source'];
+    $webform = $webform_submission->getWebform();
+    $answer_data = $webform_submission->getElementData($source);
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getRelatedTypes(array $element) {
-    return [];
-  }
+    if (isset($answer_data)) {
+      $quiz_element = $webform->getElement($source);
+      $title = $quiz_element['#title'];
+      $answer = $quiz_element['#options'][$answer_data];
+      $option_feedback = isset($quiz_element['#quiz__options']) ? $quiz_element['#quiz__options'][$answer_data] : NULL;
+      $is_correct = isset($option_feedback) && isset($option_feedback['is_correct']) ? 'CORRECT' : 'INCORRECT';
+      $feedback = isset($option_feedback) && isset($option_feedback['feedback']) ? $option_feedback['feedback'] : FALSE;
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getElementSelectorOptions(array $element) {
+      $text = $this->t('Quiz result: Question: @title Your answer: @answer Result: @is_correct Feedback: @feedback', [
+        '@title' => $title,
+        '@answer' => $answer,
+        '@is_correct' => $is_correct,
+        '@feedback' => $feedback,
+      ]);
+      return ['#plain_text' => $text . PHP_EOL];
+    }
+
     return [];
   }
 
@@ -144,12 +120,12 @@ class WebformQuizElementsResult extends WebformElementBase implements WebformEle
     $form['quiz_result'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Show results for'),
-      '#destination' => $this->t('Please note, the source and destination element must be the same element types.'),
     ];
 
     $form['quiz_result']['source'] = [
       '#type' => 'select',
       '#title' => $this->t('Quiz element'),
+      '#help' => $this->t('Select quiz element for which to show results.'),
       '#options' => $this->getWebformQuizElementsAsOptions($form_state),
       '#required' => TRUE,
     ];
@@ -160,6 +136,25 @@ class WebformQuizElementsResult extends WebformElementBase implements WebformEle
       '#options' => $this->getDisplayOnOptions(),
     ];
     return $form;
+  }
+
+  /**
+   * Get element variables for rendering.
+   */
+  private function getElementVariables($webform_submission, $source) {
+    $answer_data = $webform_submission->getElementData($source);
+    $webform = $webform_submission->getWebform();
+
+    if (isset($answer_data) && isset($webform)) {
+      $quiz_element = $webform->getElement($source);
+
+      return [
+        '#quiz_title' => $quiz_element['#title'],
+        '#quiz_options' => $this->getQuizOptionsWithFeedback($quiz_element, $answer_data),
+      ];
+    }
+
+    return [];
   }
 
 }

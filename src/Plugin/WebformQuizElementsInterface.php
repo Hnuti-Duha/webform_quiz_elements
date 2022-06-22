@@ -22,8 +22,8 @@ interface WebformQuizElementsInterface {
    * @var array
    */
   const QUIZ_RENDERED_ELEMENTS = [
-      'webform_quiz_elements_score',
-      'webform_quiz_elements_result',
+    'webform_quiz_elements_score',
+    'webform_quiz_elements_result',
   ];
 
 }
