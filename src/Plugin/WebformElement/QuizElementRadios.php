@@ -92,9 +92,21 @@ class QuizElementRadios extends Radios {
 
     $form['element']['quiz__options'] = [
       '#type' => 'webform_codemirror',
+      '#required' => TRUE,
       '#mode' => 'yaml',
       '#title' => $this->t('Quiz options'),
-      '#description' => $this->t("Quiz options"),
+      '#help' => $this->t("Quiz options in yaml format. <br/>Each radio option
+        must have a quiz option. <br/>Only one option can be marked as correct."),
+      '#description' => $this->t("Quiz options in yaml format. Each radio option
+        must have a quiz option. Only one option can be marked as correct: <br/>
+        `is_correct` indicates if this option value is a correct answer, <br/>
+        `feedback` will be displayed to on result, for example: <br/><em>
+        value1:<br/>&nbsp;&nbsp;is_correct: true<br/>&nbsp;&nbsp;feedback:
+        'This answer is correct!'<br/>
+        value2:<br/>&nbsp;&nbsp;is_correct: false<br/>&nbsp;&nbsp;feedback:
+        'This answer is incorrect!'<br/></em>To validate your YAML use validator,
+        eg <a href='https://yamlchecker.com/' target='_blank' rel='noreferrer'>
+        https://yamlchecker.com/</a>"),
     ];
 
     return $form;
