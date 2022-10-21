@@ -96,7 +96,7 @@ function webform_quiz_elements_preprocess_webform_confirmation(array &$variables
  * Implements hook_token_info_alter().
  */
 function webform_quiz_elements_token_info_alter(&$data) {
-  module_load_include('inc', 'webform_quiz_elements', 'webform_quiz_elements_.tokens');
+  \Drupal::moduleHandler()->loadInclude('webform_quiz_elements', 'inc', 'webform_quiz_elements.tokens');
 }
 
 /**
