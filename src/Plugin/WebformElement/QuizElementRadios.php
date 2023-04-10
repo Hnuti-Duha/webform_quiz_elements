@@ -11,10 +11,11 @@ use Drupal\webform\WebformSubmissionInterface;
  *
  * @WebformElement(
  *   id = "quiz_element_radios",
- *   api = "https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Render!Element!Radios.php/class/Radios",
- *   label = @Translation("Radios (quiz element)"),
- *   description = @Translation("Provides a form element for a set of radio buttons with a correct answer and feedback."),
- *   category = @Translation("Quiz elements"),
+ *   api =
+ *   "https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Render!Element!Radios.php/class/Radios",
+ *   label = @Translation("Radios (quiz element)"), description =
+ *   @Translation("Provides a form element for a set of radio buttons with a
+ *   correct answer and feedback."), category = @Translation("Quiz elements"),
  * )
  */
 class QuizElementRadios extends Radios {
@@ -24,8 +25,8 @@ class QuizElementRadios extends Radios {
    */
   protected function defineDefaultProperties() {
     return [
-      'quiz__options' => [],
-    ] + parent::defineDefaultProperties();
+        'quiz__options' => [],
+      ] + parent::defineDefaultProperties();
   }
 
   /**
@@ -110,6 +111,46 @@ class QuizElementRadios extends Radios {
     ];
 
     return $form;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
+    parent::validateConfigurationForm($form, $form_state);
+    $properties = $this->getConfigurationFormProperties($form, $form_state);
+
+    if (empty($properties['#quiz__options'])) {
+      $form_state->setErrorByName('quiz__options', $this->t('Quiz Options cannot be empty'));
+    }
+    else {
+      if (count($properties['#options']) !== count($properties['#quiz__options'])) {
+        $form_state->setErrorByName('quiz__options', $this->t('The number of Quiz Options (@quiz_options) does not match the number of Options (@options)', [
+          '@quiz_options' => count($properties['#quiz__options']),
+          '@options' => count($properties['#options']),
+        ]));
+      }
+      else {
+        if (array_keys($properties['#options']) !== array_keys($properties['#quiz__options'])) {
+          $form_state->setErrorByName('quiz__options', $this->t('Quiz options keys (@quiz_option_keys) do not match the Element options Option values (@option_keys)', [
+            '@quiz_option_keys' => implode(', ', array_keys($properties['#quiz__options'])),
+            '@option_keys' => implode(', ', array_keys($properties['#options'])),
+          ]));
+        }
+        else {
+          foreach ($properties["#quiz__options"] as $quiz_option_key => $quiz_option) {
+            foreach (['is_correct', 'feedback'] as $field) {
+              if (!isset($quiz_option[$field])) {
+                $form_state->setErrorByName('quiz__options', $this->t('Quiz option <em>@quiz_option</em> requires the <em>@field</em> value', [
+                  '@quiz_option' => $quiz_option_key,
+                  '@field' => $field,
+                ]));
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
 }
