@@ -1,0 +1,16 @@
+{
+  "name": "drupal/webform_quiz_elements",
+  "type": "drupal-module",
+  "description": "Webform quiz elements to create a quiz out of a webform.",
+  "keywords": [
+    "Drupal"
+  ],
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://www.drupal.org/project/webform_quiz_elements",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/webform_quiz_elements",
+    "source": "https://git.drupalcode.org/project/webform_quiz_elements"
+  },
+  "require": {}
+}

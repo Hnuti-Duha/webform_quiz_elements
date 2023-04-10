@@ -74,6 +74,7 @@ on one page and `Result (per quiz element)` on the next page (currently
 question and answer cannot be displayed on the same page without postback).
 
 Import `docs/example.yml` to see quiz in action!
+
 ## Roadmap
 Here's other possible questions to implement:
 - Improved UI and `quiz__options` validation

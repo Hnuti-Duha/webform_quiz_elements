@@ -1,7 +1,7 @@
 name: 'Webform Quiz Elements'
 type: module
 description: 'Webform quiz elements to create a quiz out of a webform.'
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^9.4 || ^10
 package: 'Webform'
 dependencies:
   - 'drupal:webform'
