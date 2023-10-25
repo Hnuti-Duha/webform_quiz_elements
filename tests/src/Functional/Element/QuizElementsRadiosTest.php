@@ -22,7 +22,7 @@ class QuizElementsRadiosTest extends WebformElementBrowserTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'webform',
     'webform_ui',
     'webform_quiz_elements',
