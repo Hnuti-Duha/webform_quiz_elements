@@ -2,14 +2,14 @@
 
 namespace Drupal\webform_quiz_elements\Element;
 
-use Drupal\Core\Render\Element\RenderElement;
+use Drupal\Core\Render\Element\RenderElementBase;
 
 /**
  * Provides a render element for quiz_element_result.
  *
  * @FormElement("webform_quiz_elements_result")
  */
-class WebformQuizElementResult extends RenderElement {
+class WebformQuizElementResult extends RenderElementBase {
 
   /**
    * {@inheritdoc}

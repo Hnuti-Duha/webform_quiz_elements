@@ -3,9 +3,9 @@
 namespace Drupal\webform_quiz_elements\Plugin\WebformElement;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Plugin\WebformElement\WebformDisplayOnTrait;
 use Drupal\webform\Plugin\WebformElementBase;
 use Drupal\webform\Plugin\WebformElementDisplayOnInterface;
-use Drupal\webform\Plugin\WebformElement\WebformDisplayOnTrait;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform_quiz_elements\Plugin\WebformQuizElementsInterface;
 
@@ -99,8 +99,10 @@ class WebformQuizElementsScore extends WebformElementBase implements WebformElem
     $quiz_title = $this->getWebformQuizTitle(NULL, $webform_submission);
     $question_count = $this->getWebformQuizElementsCount(NULL, $webform_submission);
     $correct_answers = $this->getWebformQuizCorrectAnswersCount(NULL, $webform_submission);
-    $is_pass = $this->getWebformQuizPass(NULL, $webform_submission, $element) ? 'PASSED' : 'FAILED';
-    $feedback = $this->getWebformQuizFeedback(NULL, $webform_submission);
+    $score = $this->getWebformQuizScore(NULL, $webform_submission);
+    $is_pass = $score >= (array_key_exists('#passing_score_percentage', $element)
+        ? $element["#passing_score_percentage"] : 100);
+    $feedback = $is_pass ? $element["#feedback_message_pass"] : $element["#feedback_message_fail"];
 
     $text = $this->t('Quiz result: @is_pass. You have answered @correct_answers out of @question_count correctly for @quiz_title. @feedback.', [
       '@quiz_title' => $quiz_title,

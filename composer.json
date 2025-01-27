@@ -12,5 +12,9 @@
     "issues": "https://www.drupal.org/project/issues/webform_quiz_elements",
     "source": "https://git.drupalcode.org/project/webform_quiz_elements"
   },
-  "require": {}
+  "require": {
+    "php": ">=8.1",
+    "drupal/core": "^10.2||^11",
+    "drupal/webform": "^6"
+  }
 }

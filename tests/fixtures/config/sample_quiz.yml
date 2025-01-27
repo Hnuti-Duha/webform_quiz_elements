@@ -57,7 +57,7 @@ elements: |-
     '#type': webform_quiz_elements_score
     '#title': 'Quiz result'
     '#passing_score_percentage': 60
-    '#feedback_message_pass': 'Congratulations, you passed the quiz with flying colours!'
+    '#feedback_message_pass': 'Congratulations, you passed the quiz with flying colors!'
     '#feedback_message_fail': 'Oh no, you have failed. Try again.'
   q1_result:
     '#type': webform_quiz_elements_result

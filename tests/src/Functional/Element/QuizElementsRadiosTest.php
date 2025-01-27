@@ -7,7 +7,7 @@ use Drupal\Tests\webform\Functional\Element\WebformElementBrowserTestBase;
 use Drupal\webform\WebformInterface;
 
 /**
- * Tests for the Webfor Quiz Elements module.
+ * Tests for the Webform Quiz Elements module.
  *
  * @group webform_quiz_elements
  */
@@ -61,9 +61,12 @@ class QuizElementsRadiosTest extends WebformElementBrowserTestBase {
    * Load a test webform.
    *
    * @param string $ymlName
+   *   Name of the yml file.
    *
    * @return \Drupal\webform\WebformInterface|null
    *   A webform.
+   *
+   * @throws \Exception
    */
   protected function loadWebform($ymlName): WebformInterface {
     if (!file_exists(self::TEST_DIR . '/' . $ymlName . '.yml')) {
@@ -84,25 +87,23 @@ class QuizElementsRadiosTest extends WebformElementBrowserTestBase {
 
   /**
    * Tests loading the sample form and accessing it.
-   *
-   * @return void
    */
   public function testWebformLoad(): void {
     $this->assertSame(self::QUIZ_ID, $this->webform->id());
+    $assert_session = $this->assertSession();
 
     $this->drupalGet('admin/structure/webform/manage/' . self::QUIZ_ID);
-    $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContains('Minjee Lee');
+    $assert_session->statusCodeEquals(200);
+    $assert_session->pageTextContains('Minjee Lee');
   }
 
   /**
    * Tests saving the form with a valid submission.
-   *
-   * @return void
    */
   public function testValidQuizSubmission(): void {
     $session = $this->getSession();
     $page = $session->getPage();
+    $assert_session = $this->assertSession();
 
     $quiz_options = <<<EOT
 brisbane:
@@ -117,17 +118,16 @@ EOT;
     $page->pressButton('Remove item 2');
     $page->pressButton('Save');
 
-    $this->assertSession()->pageTextContains('Aussie Minjee Lee won the biggest prize ever in women\'s golf this week. Where is she from? has been updated');
+    $assert_session->pageTextContains('Aussie Minjee Lee won the biggest prize ever in women\'s golf this week. Where is she from? has been updated');
   }
 
   /**
    * Tests saving the form with an invalid number of quiz options.
-   *
-   * @return void
    */
   public function testInvalidQuizOptionNumber(): void {
     $session = $this->getSession();
     $page = $session->getPage();
+    $assert_session = $this->assertSession();
 
     $quiz_options = <<<EOT
 brisbane:
@@ -139,13 +139,11 @@ EOT;
     $page->fillField('edit-properties-quiz-options', $quiz_options);
     $page->pressButton('Save');
 
-    $this->assertSession()->elementTextContains('css', 'div[role="alert"]', 'The number of Quiz Options (1) does not match the number of Options (4)');
+    $assert_session->elementTextContains('css', 'div[role="alert"]', 'The number of Quiz Options (1) does not match the number of Options (4)');
   }
 
   /**
    * Tests saving the form with an invalid keys for quiz options.
-   *
-   * @return void
    */
   public function testInvalidQuizOptionKey(): void {
     $session = $this->getSession();
@@ -169,8 +167,6 @@ EOT;
 
   /**
    * Tests saving the form with an invalid structure for quiz options.
-   *
-   * @return void
    */
   public function testInvalidQuizOptionStructure(): void {
     $session = $this->getSession();
@@ -190,4 +186,5 @@ EOT;
 
     $this->assertSession()->elementTextContains('css', 'div[role="alert"]', 'Quiz option brisbane requires the is_correct value');
   }
+
 }

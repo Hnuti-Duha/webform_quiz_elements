@@ -16,7 +16,7 @@ function webform_quiz_elements_token_info() {
   $tokens = [];
   $types['webform_quiz_elements'] = [
     'name' => t('Webform quiz elements'),
-    'description' => t('Tokens related to webforms quiz elements.'),
+    'description' => t('Tokens related to web forms quiz elements.'),
     'needs-data' => 'webform',
   ];
 

@@ -25,8 +25,8 @@ class QuizElementRadios extends Radios {
    */
   protected function defineDefaultProperties() {
     return [
-        'quiz__options' => [],
-      ] + parent::defineDefaultProperties();
+      'quiz__options' => [],
+    ] + parent::defineDefaultProperties();
   }
 
   /**

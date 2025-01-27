@@ -2,14 +2,14 @@
 
 namespace Drupal\webform_quiz_elements\Element;
 
-use Drupal\Core\Render\Element\RenderElement;
+use Drupal\Core\Render\Element\RenderElementBase;
 
 /**
  * Provides a render element to display quiz score.
  *
  * @FormElement("webform_quiz_elements_score")
  */
-class WebformQuizElementScore extends RenderElement {
+class WebformQuizElementScore extends RenderElementBase {
 
   /**
    * {@inheritdoc}

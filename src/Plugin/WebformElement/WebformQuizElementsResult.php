@@ -3,9 +3,9 @@
 namespace Drupal\webform_quiz_elements\Plugin\WebformElement;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Plugin\WebformElement\WebformDisplayOnTrait;
 use Drupal\webform\Plugin\WebformElementBase;
 use Drupal\webform\Plugin\WebformElementDisplayOnInterface;
-use Drupal\webform\Plugin\WebformElement\WebformDisplayOnTrait;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform_quiz_elements\Plugin\WebformQuizElementsInterface;
 
