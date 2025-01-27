@@ -79,6 +79,17 @@ class WebformQuizElementsScore extends WebformElementBase implements WebformElem
   /**
    * {@inheritdoc}
    */
+  protected function defineTranslatableProperties() {
+    return array_merge(
+      parent::defineTranslatableProperties(),
+      ['feedback_message_pass'],
+      ['feedback_message_fail']
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildText(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     // Hide element if it should not be displayed on 'view'.
     if (!$this->isDisplayOn($element, WebformElementDisplayOnInterface::DISPLAY_ON_VIEW)) {
