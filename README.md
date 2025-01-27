@@ -1,5 +1,7 @@
 # About this module
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/9936/badge)](https://www.bestpractices.dev/projects/9936)
+
 Create a simple quiz out of a webform with webform quiz elements module.
 
 ## New quiz elements
