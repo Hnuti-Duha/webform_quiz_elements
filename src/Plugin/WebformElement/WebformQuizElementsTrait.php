@@ -14,7 +14,7 @@ trait WebformQuizElementsTrait {
   /**
    * Returns count of quiz elements.
    */
-  private function getWebformQuizElementsCount(FormStateInterface $form_state = NULL, WebformSubmissionInterface $webform_submission = NULL) {
+  private function getWebformQuizElementsCount(?FormStateInterface $form_state = NULL, ?WebformSubmissionInterface $webform_submission = NULL) {
     $options = $this->getWebformQuizElementsAsOptions($form_state, $webform_submission);
     $elements = array_merge(...array_values($options));
     return count($elements);
@@ -23,7 +23,7 @@ trait WebformQuizElementsTrait {
   /**
    * Returns quiz elements as options.
    */
-  private function getWebformQuizElementsAsOptions(FormStateInterface $form_state = NULL, WebformSubmissionInterface $webform_submission = NULL) {
+  private function getWebformQuizElementsAsOptions(?FormStateInterface $form_state = NULL, ?WebformSubmissionInterface $webform_submission = NULL) {
     $webform = $this->getWebformObject($form_state, $webform_submission);
     if (!isset($webform)) {
       return [];
@@ -45,7 +45,7 @@ trait WebformQuizElementsTrait {
   /**
    * Returns count of correctly answered questions.
    */
-  private function getWebformQuizCorrectAnswersCount(FormStateInterface $form_state = NULL, WebformSubmissionInterface $webform_submission = NULL) {
+  private function getWebformQuizCorrectAnswersCount(?FormStateInterface $form_state = NULL, ?WebformSubmissionInterface $webform_submission = NULL) {
     $webform = $this->getWebformObject($form_state, $webform_submission);
     if (!isset($webform)) {
       return [];
@@ -70,7 +70,7 @@ trait WebformQuizElementsTrait {
   /**
    * Returns total quiz score in percentage.
    */
-  private function getWebformQuizScore(FormStateInterface $form_state = NULL, WebformSubmissionInterface $webform_submission = NULL) {
+  private function getWebformQuizScore(?FormStateInterface $form_state = NULL, ?WebformSubmissionInterface $webform_submission = NULL) {
     $total = $this->getWebformQuizElementsCount($form_state, $webform_submission);
     $correct = $this->getWebformQuizCorrectAnswersCount($form_state, $webform_submission);
 
@@ -80,7 +80,7 @@ trait WebformQuizElementsTrait {
   /**
    * Returns quiz webform title.
    */
-  private function getWebformQuizTitle(FormStateInterface $form_state = NULL, WebformSubmissionInterface $webform_submission = NULL) {
+  private function getWebformQuizTitle(?FormStateInterface $form_state = NULL, ?WebformSubmissionInterface $webform_submission = NULL) {
     /** @var \Drupal\webform\WebformInterface $webform */
     $webform = $this->getWebformObject($form_state, $webform_submission);
     if (!isset($webform)) {

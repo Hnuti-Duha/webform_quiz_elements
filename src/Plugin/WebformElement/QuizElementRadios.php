@@ -32,7 +32,7 @@ class QuizElementRadios extends Radios {
   /**
    * {@inheritdoc}
    */
-  public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+  public function prepare(array &$element, ?WebformSubmissionInterface $webform_submission = NULL) {
     // Render quiz element like a regular radio buttons.
     $element['#type'] = 'radios';
     parent::prepare($element, $webform_submission);
