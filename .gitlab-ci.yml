@@ -11,6 +11,7 @@ variables:
   OPT_IN_TEST_PREVIOUS_MINOR: 1
   OPT_IN_TEST_NEXT_MINOR: 1
   OPT_IN_TEST_NEXT_MAJOR: 0
+  _CSPELL_WORDS: 'brisvegas, Minjee, Paddington, postback'
 phpcs:
   allow_failure: false
 phpstan:
