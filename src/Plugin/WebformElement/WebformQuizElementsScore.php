@@ -150,14 +150,14 @@ class WebformQuizElementsScore extends WebformElementBase implements WebformElem
     ];
 
     $form['quiz_score']['feedback_message_pass'] = [
-      '#type' => 'textarea',
+      '#type' => 'webform_html_editor',
       '#title' => $this->t('Success message'),
       '#help' => $this->t('This message will be displayed in quiz score container in case user has passed the quiz.'),
       '#required' => TRUE,
     ];
 
     $form['quiz_score']['feedback_message_fail'] = [
-      '#type' => 'textarea',
+      '#type' => 'webform_html_editor',
       '#title' => $this->t('Failed message'),
       '#help' => $this->t('This message will be displayed in quiz score container in case user has failed the quiz.'),
       '#required' => TRUE,
@@ -179,7 +179,11 @@ class WebformQuizElementsScore extends WebformElementBase implements WebformElem
     $score = $this->getWebformQuizScore(NULL, $webform_submission);
     $is_pass = $score >= (array_key_exists('#passing_score_percentage', $element)
       ? $element["#passing_score_percentage"] : 100);
-    $message = $is_pass ? $element["#feedback_message_pass"] : $element["#feedback_message_fail"];
+    $message = [
+      '#type' => 'processed_text',
+      '#text' => $is_pass ? $element["#feedback_message_pass"] : $element["#feedback_message_fail"],
+      '#format' => 'full_html',
+    ];
 
     return [
       '#quiz_title' => $this->getWebformQuizTitle(NULL, $webform_submission),
