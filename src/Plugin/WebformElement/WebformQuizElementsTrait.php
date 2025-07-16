@@ -107,8 +107,7 @@ trait WebformQuizElementsTrait {
         'key' => $key,
         'option' => $option,
         'is_selected' => ($key == $answer_data),
-        'is_correct' => ($key == $answer_data
-          && isset($feedback) && array_key_exists('is_correct', $feedback)
+        'is_correct' => (isset($feedback) && array_key_exists('is_correct', $feedback)
           && $feedback['is_correct']),
         'feedback' => (isset($feedback)
           && array_key_exists('feedback', $feedback)
