@@ -18,7 +18,21 @@
   <div class="form-item">
     <ul class="webform-quiz-element-result-list">
     {% for quiz_option in quiz_options %}
-      <li class="messages messages--{{ quiz_option.is_selected ? (quiz_option.is_correct ? 'status' : 'error') : 'neutral' }}">
+      {% set quiz_option_attributes = create_attribute() %}
+      {% set option_classes = [
+        'alert'
+      ] %}
+      {% if quiz_option.is_correct %}
+        {% set option_classes = [
+          'alert-success'
+        ]|merge(option_classes) %}
+      {% endif %}
+      {%  if quiz_option.is_selected and quiz_option.is_correct == false %}
+        {% set option_classes = [
+          'alert-danger'
+        ]|merge(option_classes) %}
+      {% endif %}
+      <li{{ quiz_option_attributes.addClass(option_classes) }}>
         <strong>{{ quiz_option.option }}</strong>
         {% if quiz_option.is_selected %}
         <span class="sr-only">Your answer is {{ quiz_option.is_correct ? 'correct' : 'incorrect' }}</span>
